@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#f8fafc" />
+<link rel="icon" href="data:," />
+<title>Noah Ragan — ten systems libraries</title>
+<meta name="description" content="Ten small systems libraries built from scratch in TypeScript with zero runtime dependencies, each with a live browser demo." />
+<style>
+  :root{
+    --ink:#0f172a; --muted:#64748b; --line:#e6e9f0; --bg:#f8fafc; --card:#ffffff;
+    --accent:#4f46e5; --accent-soft:rgba(79,70,229,.12); --ok:#0f766e;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(15,23,42,.04), 0 12px 32px -18px rgba(15,23,42,.28);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; min-height:100vh; color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 50% -12%, rgba(79,70,229,.10), transparent 62%),
+      radial-gradient(700px 380px at 100% 0%, rgba(14,165,233,.07), transparent 60%),
+      var(--bg);
+    font:15px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+  }
+  header{
+    position:sticky; top:0; z-index:20;
+    padding:18px 24px; border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,.82);
+    backdrop-filter:saturate(180%) blur(12px);
+    -webkit-backdrop-filter:saturate(180%) blur(12px);
+  }
+  header .inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .logo{
+    width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+    color:#fff;font-weight:700;font-size:15px;
+    background:linear-gradient(180deg,#6159f2,#4f46e5);
+    box-shadow:0 1px 2px rgba(15,23,42,.14),0 10px 22px -14px rgba(79,70,229,.95);
+  }
+  .brand strong{display:block;font-size:16px;letter-spacing:-.02em}
+  .brand span{display:block;color:var(--muted);font-size:12.5px}
+  .pill{
+    padding:6px 12px;border-radius:999px;white-space:nowrap;
+    font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--ok);background:rgba(15,118,110,.08);border:1px solid rgba(15,118,110,.22);
+  }
+  main{max-width:1080px;margin:0 auto;padding:34px 22px 72px}
+  h1{margin:0 0 10px;font-size:clamp(24px,4.2vw,34px);line-height:1.2;letter-spacing:-.025em}
+  .lede{margin:0;max-width:62ch;color:var(--muted);font-size:16px}
+  .facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+  .facts li{
+    padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+  }
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+    gap:16px;margin:28px 0 0;padding:0;list-style:none;
+  }
+  .card{
+    display:flex;flex-direction:column;gap:8px;
+    padding:20px;border-radius:var(--radius);
+    border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);
+    transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{border-color:#c7d2fe;transform:translateY(-2px)}
+  .card h2{margin:0;font-size:16px;letter-spacing:-.01em;display:flex;align-items:baseline;gap:8px}
+  .card .num{font-size:11.5px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+  .card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
+  .links{display:flex;gap:14px;margin-top:6px;font-size:13.5px;font-weight:600}
+  .links a{color:var(--accent);text-decoration:none;text-underline-offset:3px}
+  .links a:hover{text-decoration:underline}
+  .links a.plain{color:var(--muted);font-weight:500}
+  footer{
+    max-width:1080px;margin:0 auto;padding:0 22px 48px;
+    color:var(--muted);font-size:13px;border-top:1px solid var(--line);
+  }
+  footer p{margin:16px 0 0}
+  a{color:var(--accent);text-underline-offset:3px}
+  code{padding:1px 6px;border-radius:6px;font-size:.92em;color:var(--accent);background:var(--accent-soft)}
+  @media (max-width:720px){
+    header{padding:14px 16px}
+    header .inner{flex-wrap:wrap;gap:10px}
+    main{padding:24px 14px 56px}
+    .card{padding:16px;border-radius:14px}
+    .grid{grid-template-columns:1fr;gap:12px}
+    .links{font-size:14px}
+    .links a{padding:8px 0}
+    footer{padding:0 16px 40px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <div class="brand">
+      <div class="logo">N</div>
+      <div>
+        <strong>Noah Ragan</strong>
+        <span>ten systems libraries, each with a live demo</span>
+      </div>
+    </div>
+    <span class="pill">all ten deployed</span>
+  </div>
+</header>
+
+<main>
+  <h1>Ten systems libraries, built from scratch.</h1>
+  <p class="lede">
+    Each one is TypeScript with no third-party runtime code: the feature flags, the job queue,
+    the search index and the rest are written against Node's own modules. Every card below opens a
+    working demo — the buttons hit the real library, not a mock.
+  </p>
+  <ul class="facts">
+    <li>190 tests on Node's built-in runner</li>
+    <li>zero runtime dependencies</li>
+    <li>strict TypeScript</li>
+    <li>MIT licensed</li>
+  </ul>
+
+  <ul class="grid">
+    <li class="card">
+      <h2><span class="num">01</span> Beacon</h2>
+      <p>Counters and histograms rendered in Prometheus text format, from a scrape you can trigger.</p>
+      <div class="links">
+        <a href="https://beacon-n70q.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Beacon">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">02</span> Cordon</h2>
+      <p>Token-bucket rate limiting that answers with a proper Retry-After instead of dropping requests.</p>
+      <div class="links">
+        <a href="https://cordon-x1dh.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Cordon">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">03</span> Crucible</h2>
+      <p>An expression language with its own lexer, parser and evaluator — no <code>eval()</code> anywhere.</p>
+      <div class="links">
+        <a href="https://crucible-jaoj.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Crucible">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">04</span> Relay</h2>
+      <p>Webhook delivery with HMAC signatures, retries and a dead letter, and no requests to private addresses.</p>
+      <div class="links">
+        <a href="https://relay-7h9c.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Relay">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">05</span> Sift</h2>
+      <p>Full-text search with a positional index and BM25 ranking, including phrase and prefix matching.</p>
+      <div class="links">
+        <a href="https://sift-e42c.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Sift">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">06</span> Aperture</h2>
+      <p>scrypt password hashing, session tokens stored only as hashes, and RFC 6238 one-time codes.</p>
+      <div class="links">
+        <a href="https://aperture-aapm.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Aperture">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">07</span> Atlas</h2>
+      <p>Event-sourced documents where a stale write is rejected instead of quietly overwriting someone.</p>
+      <div class="links">
+        <a href="https://atlas-5ppa.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Atlas">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">08</span> Ledger</h2>
+      <p>Double-entry accounting on integer minor units, refusing any entry that would unbalance the books.</p>
+      <div class="links">
+        <a href="https://ledger-sdo4.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Ledger">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">09</span> Ratchet</h2>
+      <p>A job queue with leases, exponential backoff and a dead letter, so a poisoned job never loops.</p>
+      <div class="links">
+        <a href="https://ratchet-ormi.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Ratchet">Source</a>
+      </div>
+    </li>
+    <li class="card">
+      <h2><span class="num">10</span> Quorum</h2>
+      <p>Feature flags bucketed by a hash of flag and subject, so raising a rollout can only add people.</p>
+      <div class="links">
+        <a href="https://quorum-jb4y.onrender.com/">Live demo ↗</a>
+        <a class="plain" href="https://github.com/MotherTheresa64/Quorum">Source</a>
+      </div>
+    </li>
+  </ul>
+</main>
+
+<footer>
+  <p>
+    Demos run on Render's free tier, so the first visit to a sleeping app can take a few seconds to wake up.
+    Source for all ten lives at <a href="https://github.com/MotherTheresa64">github.com/MotherTheresa64</a>.
+  </p>
+</footer>
+</body>
+</html>
